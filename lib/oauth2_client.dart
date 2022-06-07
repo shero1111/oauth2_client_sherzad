@@ -48,10 +48,16 @@ class OAuth2Client {
   String authorizeUrl;
   String scopeSeparator;
 
+
+  Map<String, String> _headers = {}; //Additional Headers to be added to request.
   Map<String, String> _accessTokenRequestHeaders = {};
 
   BaseWebAuth webAuthClient = createWebAuth();
   CredentialsLocation credentialsLocation;
+
+  void addHeaders(Map<String, String> headers){
+    _headers.addAll(headers);
+  }
 
   /// Creates a new client instance with the following parameters:
   ///
@@ -393,6 +399,9 @@ class OAuth2Client {
 
     headers ??= {};
     params ??= {};
+
+    //@author Sherzad
+    headers.addAll(_headers);
 
     //If a client secret has been specified, it will be sent in the "Authorization" header instead of a body parameter...
     if (clientSecret == null) {
